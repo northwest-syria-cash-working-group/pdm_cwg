@@ -13,13 +13,6 @@ library(stringi)
 library(janitor)
 library(scales)
 library(magrittr)
-library(viridis)
-library(skimr)
-library(patchwork)
-library(DT)
-library(here)
-library(sf)
-library(plotly)
 library(flextable)
 library(naniar)
 
@@ -60,16 +53,19 @@ not_any_na <- function(x) all(!is.na(x))
 locations <- read_csv("./data/locations_aoc.csv")
 
 
-pcode3_shape <- 
-  st_read("./data/syr_admbnda_uncs_unocha_20201217/syr_admbnda_adm3_uncs_unocha_20201217.shp")
-
+# pcode3_shape <- 
+#   st_read("./data/syr_admbnda_uncs_unocha_20201217/syr_admbnda_adm3_uncs_unocha_20201217.shp")
+ 
 ```
 
 # Some notes to start 
 
 The .xls of the KOBO version of the harmonised tool needs to be downloaded and processed. This is in order to set the "empty container" with which we will match the rest of the datasets that we are cleaning. And go through each of the columns to decide on where and how exactly each partner had been compliant with the tool. Admittedly, I should have started here, but I still don't have access to the back-end of the KOBO survey. Ideally, I would just rename each of the columns in line with the question code in the harmonised tool, so I realised that I wasted a lot of time doing renaming below, though it does make navigating the dataset a little bit easier. 
 
+For reference [link](https://docs.google.com/spreadsheets/d/1JHD1RaSEVRcrJHQ5y_KSzIq8T7OyglkH/edit#gid=243288867) to questionnaire. 
+
 The "empty container" should look something like this:
+
 
 ```{r}
 codebook <- tribble(
