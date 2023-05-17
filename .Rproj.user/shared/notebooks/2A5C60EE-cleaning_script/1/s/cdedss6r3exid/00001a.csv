@@ -1,0 +1,15 @@
+"0","goal %>% select(contains(""currency"")) %>% 
+  glimpse()
+"
+"1","Rows: 245"
+"1",""
+"1","
+"
+"1","Columns: 1"
+"1",""
+"1","
+"
+"1","$ cash_when_receiving_cash_which_currency_do_you_prefer [3m[38;5;246m<chr>[39m[23m ""syrian_pounds"", ""us_dollars"", ""u~"
+"1",""
+"1","
+"

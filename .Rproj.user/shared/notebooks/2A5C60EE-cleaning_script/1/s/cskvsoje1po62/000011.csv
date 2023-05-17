@@ -1,0 +1,59 @@
+"0","# GOAL's NA is ""---""
+goal <- 
+  read_excel(""./data/pdm_raw/EQ Emergency PDM Data GOAL.xlsx"") %>% 
+  select(-form.date) %>% 
+  replace_with_na_all(condition = ~ .x == ""---"") %>% 
+  select(where(not_all_na)) %>% 
+  clean_names() %>% 
+  rename_all(funs(
+    str_replace_all(., ""form_"", """") %>% 
+      str_replace_all(., ""_choice"", """")
+  )) %>% 
+  # Doing this because the date column is blocking me from replacing 
+  # all ""---"" with NAs, because dealing with dates is irritating
+  left_join(read_excel(""./data/pdm_raw/EQ Emergency PDM Data GOAL.xlsx"") %>% 
+              select(formid, date = form.date), 
+            by = ""formid"") %>% 
+  rename(share_assistance = 
+           has_anyone_asked_you_to_share_part_of_the_assistance_you_received_to_be_given_to_other_families, 
+         exchange_favour = 
+           has_anyone_taxed_you_money_or_vouchers_or_items_or_services_or_favours_in_order_to_receive_the_assistance_or_after_receiving_it, 
+         # They separated family and community, just piece it back together
+         tensions_community = any_tension_between_you_and_your_community, 
+         tensions_family = any_disagreements_within_your_family, 
+         transfer_value_usd = cash_what_is_the_value_of_cash_you_have_received_usd, 
+         # Not exactly the banknote question
+         satisfied_with_banknote_quality =
+           cash_were_you_satisfied_with_the_quality_of_usd_banknote, 
+         governorate = location_details_governorate, 
+         district = location_details_district, 
+         sub_district = location_details_subdistrict, 
+         community = location_details_village, 
+         latitude_y = location_details_latitude, 
+         longitude_x = location_details_longitude) %>% 
+  # combining family and community tensions back together 
+  mutate(tensions_family_community = ifelse(tensions_family == ""yes"" | 
+                                              tensions_community == ""yes"", 
+                                            ""yes"", ""no"")) %>% 
+  # Just capitalising the first letter of Yesses and Nos
+  mutate_at(vars(share_assistance, 
+                 fee_tax_assistance, 
+                 tensions_family_community, 
+                 satisfied_with_banknote_quality), ~ str_to_title(.)) %>% 
+  # Easiest way to rename long columns, though
+  # this is not exactly relevant, since we should start with the codebook
+  select_all(~ gsub(""cash_were_you_satisfied_with_the_quality_of_usd_banknote_if_no_why_"", """", .)) %>% 
+  # This only shortens the names, when the dataset is combined, 
+  select_all(~ gsub(""any_tension_between_you_and_your_community_if_yes_how"", ""tension"", .)) %>% 
+  select_all(~ gsub(""cash_what_items_did_you_purchase_with_the_cash"", ""items_bought"", .)) 
+"
+"1","[1m[33mError[39m in `tbl_at_vars()`:[22m
+[33m![39m Can't subset columns that don't exist.
+[31mx[39m Column `fee_tax_assistance` doesn't exist.
+Backtrace:
+[90m  1. [39m... %>% ...
+[90m 17. [39m[1mdplyr[22m::mutate_at(...)
+[90m 18. [39mdplyr:::manip_at(...)
+[90m 19. [39mdplyr:::tbl_at_syms(...)
+[90m 20. [39m[1m[94mdplyr:::tbl_at_vars([39m[22mtbl, vars, .include_group_vars = .include_group_vars, error_call = error_call[1m[94m)[39m[22m
+"

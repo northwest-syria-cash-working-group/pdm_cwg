@@ -1,0 +1,100 @@
+"0","whh <- read_excel(""./data/pdm_raw/MPC_-_PDM_-_WHH_-_all_versions_-_english_-_FR Shafak.xlsx"", 
+           skip = 1) %>% 
+  clean_names() %>% 
+  select_all(~ gsub(""i_would_like_to_ask_you_some_basic_details_about_your_household_could_you_please_select_all_the_following_options_that_apply_"", """", .)) %>% 
+  select_all(~ gsub(""we_are_a_"", """", .)) %>% 
+  select_all(~ gsub(""x2_1_what_did_your_household_spend_the_cash_assistance_on_"", ""items_bought_"", .)) %>% 
+  select_all(~ gsub(""x2_2_what_are_the_three_things_that_your_household_spent_most_of_the_cash_assistance_on_"",
+                    ""three_items_"", .)) %>%
+  select_all(~ gsub(""fresh_food_meat_fruit_vegetables_dairy_eggs_bread_etc"",
+                    ""fresh_food"", .)) %>% 
+  select_all(~ gsub(""dry_produced_food_cereals_canned_food_oil_ghee_sugar_tea_etc"",
+                    ""dry_food"", .)) %>% 
+  select_all(~ gsub(""shelter_tents_plastic_sheet_tarp_shelter_repair_improvements"",
+                    ""shelter_NFIs_improvement"", .)) %>% 
+  select_all(~ gsub(""shelter_tents_plastic_sheet_tarp_shelter_repair_improvements"",
+                    ""shelter_NFIs_improvement"", .)) %>% 
+  select_all(~ gsub(""electricity_and_lighting_electric_bill_solar_panels_batteries"",
+                    ""electricity_lighting"", .)) %>% 
+  select_all(~ gsub(""saved_not_yet_spent"",
+                    ""savings"", .)) %>% 
+  select_all(~ gsub(""household_appliances"",
+                    ""hh_appliances"", .)) %>% 
+  select_all(~ gsub(""fuel_for_cooking_diesel_wood_gas_pomace_etc"",
+                    ""cooking_fuel"", .)) %>% 
+  select_all(~ gsub(""fuel_for_heating_diesel_wood_gas_pomace_etc"",
+                    ""heating_fuel"", .)) %>% 
+  select_all(~ gsub(""education_expenses"",
+                    ""education"", .)) %>% 
+  select_all(~ gsub(""household_personal_hygiene_items_soap_dishwashing_soap_detergents_shampoo_sanitary_pads"",
+                    ""hh_hygiene_items"", .)) %>% 
+  select_all(~ gsub(""x3_2_2_what_items_services_you_needed_but_were_not_able_to_find_in_the_markets_shops_"",
+                    ""items_not_in_market_"", .)) %>% 
+  select_all(~ gsub(""x3_5_what_challenges_did_you_face_while_exchanging_and_or_spending_cash_in_the_past_month_"",
+                    ""challenges_spending_"", .)) %>%
+  select_all(~ gsub(""x4_2_what_are_they_"",
+                    ""unmet_need_"", .)) %>%
+  select_all(~ gsub(""assets_that_make_money_such_as_livestock_that_produce_milk_cheese_machinery_that_produces_"",
+                    """", .)) %>%
+  select_all(~ gsub(""x5_2_what_type_of_favour_was_requested_"",
+                    ""favour_"", .)) %>%
+  select_all(~ gsub(""x5_4_who_asked_for_the_favour_s_"",
+                    ""favour_who_"", .)) %>%
+  select_all(~ gsub(""communication_cell_phone_internet"",
+                    ""communication"", .)) %>%
+  select_all(~ gsub(""baby_needs_baby_diapers_baby_wipes_baby_ointment_etc"",
+                    ""baby_needs"", .)) %>%
+  select_all(~ gsub(""x5_8_who_asked_you_to_share_the_assistance_you_received"",
+                    ""share_who"", .)) %>%
+  select_all(~ gsub(""armed_group_powerholder_in_the_area"",
+                    ""armed_group_powerholder"", .)) %>%
+  rename(vulnerable_household_member = 
+           my_household_has_at_least_one_vulnerable_member_i_e_elderly_dependent_person_with_injury_person_with_disability_chronically_ill, 
+         respondent_sex = what_is_your_gender, 
+         challenges_spending_money_exchange = 
+           challenges_spending_problems_accessing_money_exchange_shop_hawala_agent_shop, 
+         challenges_spending_security = challenges_spending_security_problems_on_the_journey_to_the_market, 
+         challenges_spending_damaged_banknotes = challenges_spending_damaged_banknotes_are_not_accepted, 
+         challenges_spending_weather = challenges_spending_restricted_access_due_to_weather_conditions, 
+         challenges_spending_overcrowding_shops = challenges_spending_overcrowding_in_the_shop, 
+         challenges_spending_vendor_refused = challenges_spending_vendor_refused_to_serve_you, 
+         challenges_spending_transport_cost = challenges_spending_transportation_cost, 
+         challenges_spending_no_nearby_market = challenges_spending_no_accessible_nearby_market, 
+         challenges_spending_not_allowed_travel = 
+           challenges_spending_not_allowed_to_travel_to_the_market_because_of_regulations_i_e_covid, 
+         challenges_spending_market_not_accessible = 
+           challenges_spending_the_market_is_not_accessible_for_certain_groups, 
+         idp_household = we_are_an_idp_household, 
+         large_household = large_household_over_7_members,
+         children_under_five = my_household_has_more_than_one_child_under_5_years_old, 
+         female_headed_household = my_household_is_headed_by_a_female, 
+         elderly_headed_household = my_household_is_headed_by_an_elderly_i_e_60_years_old, 
+         returnee_household = returned_household, 
+         host_community_household = household_from_the_host_community, 
+         injured_disabled_ill_household_head = 
+           my_household_is_headed_by_a_member_who_is_injured_with_disability_and_or_is_chronically_ill, 
+         share_assistance = x5_7_did_anyone_ask_you_to_share_the_assistance_you_received, 
+         share_assistance_who = x5_8_who_asked_you_to_share_the_assistance_you_received, 
+         tensions = x5_11_what_is_are_the_issue_s, 
+         tensions_family_community =
+           x5_10_was_there_any_tensions_in_the_community_as_a_result_of_receiving_the_cash_assistance, 
+         poor_shelter_conditions = 
+           my_household_lives_in_collective_shelter_abandoned_and_or_damaged_building_tent_tarp_under_trees_cave_or_equivalent_poor_living_situation, 
+         exchange_favour = 
+           x5_1_were_you_or_anyone_you_know_from_your_community_asked_to_provide_any_favour_in_exchange_for_this_assistance,
+         challenges_spending = 
+           x3_4_did_you_face_any_challenges_while_exchanging_and_or_spending_cash_in_the_past_month, 
+         preferred_modality = 
+           x1_3_if_you_were_to_receive_similar_assistance_in_the_future_what_modality_would_you_prefer_the_most, 
+         preferred_currency = 
+           x1_4_in_which_currency_do_you_prefer_to_receive_the_cash_assistance, 
+         child_headed_household = 
+           my_household_is_headed_by_a_child_i_e_below_18_years_old)
+"
+"1","[1m[33mError[39m in `rename()`:[22m
+[33m![39m Can't rename columns that don't exist.
+[31mx[39m Column `x5_8_who_asked_you_to_share_the_assistance_you_received` doesn't exist.
+Backtrace:
+[90m 1. [39m... %>% ...
+[90m 3. [39m[1m[94mdplyr:::rename.data.frame([39m[22m...[1m[94m)[39m[22m
+"

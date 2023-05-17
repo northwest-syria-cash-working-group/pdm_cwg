@@ -1,0 +1,5 @@
+"0","cols %>% janitor::row_to_names()
+"
+"2","Error in janitor::row_to_names(.) : 
+  argument ""row_number"" is missing, with no default
+"
