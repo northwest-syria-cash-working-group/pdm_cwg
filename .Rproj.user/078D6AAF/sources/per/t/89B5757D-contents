@@ -549,6 +549,7 @@ syria_relief <- read_excel("./data/pdm_raw/First Q_PDM_SR_MPCA Syria Relief.xlsx
                                        items_bought_other_please_specify == 1, 
                                      1, 0))
 
+syria_relief %>% glimpse()
 ```
 
 ```{r}
